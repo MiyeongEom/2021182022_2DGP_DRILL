@@ -5,19 +5,37 @@ open_canvas()
 grass = load_image('grass.png')
 character = load_image('Idle.png')
 Run_User = load_image('Run.png')
+Walk_User = load_image('Walk.png')
 
-x = 130
-y = 90
+user_x = 130
+user_y = 90
 
-def basic_backgruond():
+def basic_ground():
     clear_canvas()
     grass.draw(400, 30)
 
-def Stand_User():
+
+def running():
+    global x
+    global y
+    frame = 0
+    x = user_x
+    y = user_y
+    while x < 700:
+        basic_ground()
+        Run_User.clip_draw(frame * 100, 0, 100, 100, x, y-10)
+        update_canvas()
+        frame = (frame + 1) % 5
+        x += 6
+        delay(0.04)
+        get_events()
+
+
+def stand():
     frame = 0
     count = 0
-    while (count < 12):
-        basic_backgruond()
+    while count < 12:
+        basic_ground()
         character.clip_draw(frame * 100, 0, 100, 100, x, y)
         update_canvas()
         frame = (frame + 1) % 4
@@ -25,21 +43,8 @@ def Stand_User():
         get_events()
         count = count + 1
 
-def Running_User():
-    frame = 0
-    dis = 0
-    while (x + dis < 700):
-        basic_backgruond()
-        Run_User.clip_draw(frame * 100, 0, 100, 100, x+dis, y-10)
-        update_canvas()
-        frame = (frame + 1) % 5
-        dis += 6
-        delay(0.03)
-        get_events()
 
-
-Stand_User()
-Running_User()
-Stand_User()
+running()
+stand()
 
 close_canvas()
