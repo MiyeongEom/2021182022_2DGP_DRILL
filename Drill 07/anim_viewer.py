@@ -64,3 +64,6 @@ walking()
 stand()
 
 close_canvas()
+
+# fire sprite 꼭 구현 해보기
+# 함수, 지역/전역 변수 공부
