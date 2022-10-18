@@ -14,6 +14,12 @@ class Stage_ONE():
     def draw(self):
         self.stage1.draw(650, 300)
 
+class Hero():
+    def __int__(self):
+        self.Idle = load_image('MC_Idle.png')
+
+    def draw(self):
+        pass
 
 def handle_events():
     events = get_events()
@@ -22,7 +28,7 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_ESCAPE:
-                game_framework.quit()
+                game_framework.change_state(title_state)
 
 
 stage1 = None
