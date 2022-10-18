@@ -16,9 +16,18 @@ class Stage_ONE():
 
 class Hero():
     def __int__(self):
-        self.Idle = load_image('MC_Idle.png')
+        self.x, self.y = 0, 90
+        self.dir = 0
+        self.dir2 = 0
+        self.stand = load_image('MC_Idle.png')
+        self.walking = load_image('MC_Walking.png')
+        self.Run = load_image('MC_Run.png')
+
+    def update(self):
+
 
     def draw(self):
+
         pass
 
 def handle_events():
