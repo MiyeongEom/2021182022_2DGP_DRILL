@@ -24,9 +24,10 @@ class Hero:
 
     def __init__(self):
         self.x = 100
-        self.y = 90
+        self.y = 75
         self.stand_image = load_image('MC_Idle.png')
         self.walking_image = load_image('MC_Walking.PNG')
+        self.Attack01_image = load_image('MC_Attack01.png')
         # 592 102
 
     def update(self):
@@ -96,15 +97,14 @@ def handle_events():
                     main_hero.dir2 = -1
                     main_hero.dir -= 1
 
-                case pico2d.SDLK_a:
-                    main_hero.action = 1
-
-
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_RIGHT:  # 오른쪽
                 main_hero.dir -= 1
             elif event.key == SDLK_LEFT:  # 왼쪽
                 main_hero.dir += 1
+            elif event.key == SDLK_a:
+                main_hero.action = 0
+
 
 main_hero = None
 stage1 = None
