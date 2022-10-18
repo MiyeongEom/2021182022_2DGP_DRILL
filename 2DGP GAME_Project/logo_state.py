@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import play_state
+import title_state
 
 image = None
 running = True
@@ -23,13 +24,13 @@ def update():
     delay(0.05)
     logo_time += 0.05
     if logo_time > 1.0:
-        game_framework.change_state(play_state)
+        game_framework.change_state(title_state)
     pass
 
 def draw():
     # fill here
     clear_canvas()
-    image.draw(400,300)
+    image.draw(650, 300)
     update_canvas()
     pass
 

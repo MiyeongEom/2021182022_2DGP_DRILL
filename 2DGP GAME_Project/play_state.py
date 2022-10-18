@@ -1,27 +1,41 @@
 from pico2d import*
+import game_framework
+import title_state
+import logo_state
+
+# 화면 크기
+GAME_X = 1300
+GAME_Y = 600
 
 class Stage_ONE():
     def __init__(self):
         self.stage1 = load_image('stage1_background.png')
 
     def draw(self):
-        self.stage1.draw(1300 // 2, 600 // 2)
+        self.stage1.draw(650, 300)
 
-GAME_X = 1300 # 화면 크기
-GAME_Y = 600
 
-open_canvas(GAME_X, GAME_Y)
+def handle_events():
+    events = get_events()
+    for event in events:
+        if event.type == SDL_QUIT:
+            game_framework.quit()
+        elif event.type == SDL_KEYDOWN:
+            if event.key == SDLK_ESCAPE:
+                game_framework.quit()
 
+
+stage1 = None
 running = None
 
 def enter():
-    global stage1
-    global running
+    global stage1, running
     stage1 = Stage_ONE()
     running = True
 
 # 게임 종료 - 객체 소멸
 def exit():
+    global stage1
     del stage1
 
 #게임 객체 업데이트 - 게임 로직
@@ -40,12 +54,12 @@ def pause():
 def resume():
     pass
 
-open_canvas(GAME_X, GAME_Y)
-enter()
+def test_self():
+    import sys
+    this_module = sys.modules['__main__']
+    pico2d.open_canvas()
+    game_framework.run(this_module)
+    pico2d.close_canvas()
 
-while running:
-    update()
-    draw()
-
-exit()
-close_canvas()
+if __name__ == '__main__': # 만약 단독 실행 상태이면,
+    test_self()
