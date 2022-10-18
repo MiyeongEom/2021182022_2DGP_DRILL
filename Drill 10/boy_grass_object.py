@@ -20,7 +20,6 @@ class Boy:
     def draw(self):
         self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
 
-
 def handle_events():
     global running
     events = get_events()
@@ -30,3 +29,22 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
 
+open_canvas()
+boy = Boy()
+grass = Grass()
+running = True
+
+# game main loop code
+while running:
+    handle_events()
+
+    boy.update()
+
+    clear_canvas()
+    grass.draw()
+    boy.draw()
+    update_canvas()
+
+    delay(0.05)
+
+close_canvas()

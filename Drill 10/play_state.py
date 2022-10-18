@@ -1,7 +1,8 @@
 from pico2d import *
 import game_framework
+import logo_state
+import title_state
 import item_state
-import random
 
 class Grass:
     def __init__(self):
@@ -12,26 +13,34 @@ class Grass:
 
 class Boy:
     def __init__(self):
-        self.x, self.y = random.randint(10,790), 90
+        self.x, self.y = 0, 90
         self.frame = 0
         self.dir = 1
         self.image = load_image('animation_sheet.png')
+        self.boy_image = load_image('ball21X21.png')
+        self.item = None
 
     def update(self):
         self.frame = (self.frame + 1) % 8
-        self.x += self.dir * 1
-        if self.x > 800:
+        self.x += self.dir * 5
+        if self.x > 400:
             self.dir = -1
-            self.x = 800
-        elif self.x < 0 :
+        elif self.x < 100:
             self.dir = 1
-            self.x = 0
+            self.x = 100
 
     def draw(self):
+        if self.item == 'Boy':
+            if self.dir == 1:
+                self.image.clip_draw(self.frame*100, 100, 100, 100, self.x + 50, self.y)
+            else:
+                self.image.clip_draw(self.frame*100, 0, 100, 100, self.x + 50, self.y)
+
         if self.dir == 1:
             self.image.clip_draw(self.frame*100, 100, 100, 100, self.x, self.y)
-        elif self.dir == -1:
-            self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
+        else:
+            self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+
 
 def handle_events():
     events = get_events()
@@ -40,45 +49,42 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_ESCAPE:
-                #game_framework.change_state(title_state)
                 game_framework.quit()
-            if event.key == SDLK_b:
+            elif event.key == SDLK_b:
                 game_framework.push_state(item_state)
+    delay(0.01)
 
-boys = []
-boy = None
+
+# 게임 초기화 : 객체들을 생성
+boy = None # C NULL
 grass = None
-
-#게임 초기화 : 객체들 생성
+running = None
 def enter():
-    global boy,grass
+    global boy, grass, running
     boy = Boy()
-    boys.append(boy)
     grass = Grass()
+    running = True
 
-#게임 종료 코드 - 객체 소멸 /
+# 게임 종료 - 객체를 소멸
 def exit():
-    global boy,grass,boys
+    global boy, grass
     del boy
     del grass
-    del boys
 
-    # 게임월드 객체 업데이트
+# 게임 월드 객체를 업데이트 - 게임 로직
 def update():
-    for b in boys:
-        b.update()
-
-    # 게임월드 렌더링
-def draw():
-    clear_canvas()
-    draw_world()
-    update_canvas()
+    boy.update()
 
 def draw_world():
     grass.draw()
-    for b in boys:
-        b.draw()
+    boy.draw()
 
+
+def draw():
+    # 게임 월드 렌더링
+    clear_canvas()
+    draw_world()
+    update_canvas()
 
 def pause():
     pass
@@ -93,5 +99,5 @@ def test_self():
     game_framework.run(this_module)
     pico2d.close_canvas()
 
-if __name__ == '__main__':# 만약 단독실행 상태라면
+if __name__ == '__main__': # 만약 단독 실행 상태이면,
     test_self()
