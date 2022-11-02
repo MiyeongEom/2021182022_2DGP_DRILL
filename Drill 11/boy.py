@@ -10,7 +10,7 @@ key_event_table = {
     (SDL_KEYUP, SDLK_RIGHT) : RU,
     (SDL_KEYUP, SDLK_LEFT) : LU,
 
-    (SDL_KEYDOWN, SDLK_a) : AD,
+    (SDL_KEYDOWN, SDLK_a) : AD
 }
 
 class SLEEP:
@@ -107,42 +107,38 @@ class RUN:
             self.image.clip_draw(self.frame*100, 100, 100, 100, self.x, self.y)
 
 class AUTO_RUN:
+
     def enter(self, event):
         print('ENTER AUTO')
         self.dir = self.face_dir
-        self.y += 20
 
 
     def exit(self):
         print('EXIT AUTO')
         self.face_dir = self.dir
         self.dir = 0
-        self.y -= 20
-
 
     def do(self): #움직일 수 있도록 프레임 증가
         self.frame = (self.frame + 1) % 8
 
-        if self.x <= 0:
-            self.dir = 1
-        elif self.x >= 800:
-            self.dir = -1
         self.x += self.dir
-        self.x = clamp(0, self.x, 800)
-
+        if (self.x >= 750):
+            self.dir = -1
+        elif (self.x <= 50):
+            self.dir = 1
 
     def draw(self):
-        if self.face_dir == -1: #오른쪽을 바라보고 있는 상태
-            self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y, 150)
+        if self.dir == -1: #오른쪽을 바라보고 있는 상태
+            self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y+20, 150, 150)
         elif self.dir == 1:
-            self.image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y, 150)
+            self.image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y+20, 150, 150)
 
 
 next_state = {
-    SLEEP: {RD: RUN, LD: RUN, RU: RUN, LU: RUN, AD: IDLE}, #SLEEP -> SLEEP 발생한 경우 ERROR_STATE를 하나 만들어두는 것도 좋음
+    SLEEP: {RD: RUN, LD: RUN, RU: RUN, LU: RUN}, #SLEEP -> SLEEP 발생한 경우 ERROR_STATE를 하나 만들어두는 것도 좋음
     IDLE: {RU: RUN, LU: RUN, RD: RUN, LD: RUN, TIMER: SLEEP, AD: AUTO_RUN},
     RUN: {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, AD: AUTO_RUN},
-    AUTO_RUN: {RD: RUN, LD: RUN, RU: AUTO_RUN, LU: AUTO_RUN, AD: IDLE}
+    AUTO_RUN: {RU: RUN, LU: RUN, RD: RUN, LD: RUN, AD: IDLE}
 }
 
 
