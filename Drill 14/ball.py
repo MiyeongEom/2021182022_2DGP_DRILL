@@ -14,7 +14,7 @@ class Ball:
                          random.randint(0, 1000)
 
     def draw(self):
-        self.image.draw(self.x - server.background.window_left,
+        self.image.draw(self.x - serm,ver.background.window_left,
                         self.y - server.background.window_bottom, 40, 40)
 
     def update(self):
