@@ -57,7 +57,6 @@ def walking():
         delay(0.04)
         get_events()
 
-
 running()
 stand()
 walking()
