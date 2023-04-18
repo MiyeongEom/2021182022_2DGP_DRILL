@@ -55,9 +55,6 @@ def update_world():
     y = (1-t)*sy + t*ay
     if t >= 1.0:
         reset_world()
-    pass
-
-
 
 reset_world()
 
